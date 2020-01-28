@@ -57,6 +57,8 @@ const addArtist = () => {
 
     const resultList = document.querySelector("div.result_list");
     resultList.prepend(newItem);
+    
+    artistForm.reset()
 }
 
 const removeArtist = targetId => {
