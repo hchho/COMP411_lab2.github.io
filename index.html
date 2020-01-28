@@ -4,6 +4,7 @@
     <title>Lab 2</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="main.js" defer></script>
 </head>
 
 <body>
@@ -12,7 +13,18 @@
             <div id="app_title">
                 Artist Directory
             </div>
-            <input type="text" placeholder="Type artist name here" />
+            <div class="search_container__content">
+                <input type="text" placeholder="Type artist name here" />
+                <input id="addArtistBtn" type="button" value="Add artist" onclick="showForm()" />
+            </div>
+        </div>
+        <div class="form_container">
+            <form name="artistForm">
+                <input type="text" placeholder="Artist Name" name="artistName" />
+                <input type="text" placeholder="About Artist" name="artistDesc" />
+                <input type="text" placeholder="Image URL" name="artistImg" />
+                <input type="button" value="Add" id="addBtn" onclick="addArtist()"/>
+            </form>
         </div>
         <div class="result_container">
             <div class="result_list">
