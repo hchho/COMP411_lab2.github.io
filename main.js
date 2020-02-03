@@ -1,4 +1,5 @@
 const STRING_LIMIT = 40;
+const ARTIST_LIST_KEY = 'artistList'
 
 const showForm = () => {
     const formContainer = document.querySelector("div.form_container");
@@ -6,13 +7,39 @@ const showForm = () => {
     formContainer.style.display = isFormVisible ? "none" : "flex"; // reverse visibility
 }
 
-const addArtist = () => {
+const loadArtistsFromLocalStorage = () => {
+    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
+    const artistList = JSON.parse(rawArtistList)
+    Object.keys(artistList).forEach(k => addArtistToDom(JSON.parse(artistList[k]), k))
+}
+
+const handleAddArtistClick = () => {
+    const artistForm = document.forms["artistForm"]
+    const artist = Object.assign({}, {
+        artistName: artistForm.artistName.value,
+        artistDesc: artistForm.artistDesc.value,
+        artistImg: artistForm.artistImg.value
+    })
+
     const newId = (new Date()).getTime()
 
-    const artistForm = document.forms["artistForm"]
+    addArtistToDom(artist, newId)
+    addToLocalStorage(artist, newId)
+}
 
-    const artistName = artistForm.artistName.value
-    const artistDesc = artistForm.artistDesc.value
+const addToLocalStorage = (artist, newId) => {
+    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
+    const artistList = JSON.parse(rawArtistList)
+
+    const parsedArtist = JSON.stringify(artist)
+    const result = artistList || {}
+    result[newId] = parsedArtist
+    localStorage.setItem(ARTIST_LIST_KEY, JSON.stringify(result))
+}
+
+const addArtistToDom = (obj, newId) => {
+    const { artistName, artistDesc, artistImg } = obj
+
     if (artistName.length > STRING_LIMIT || artistDesc.length > STRING_LIMIT) {
         alert("Input cannot be longer than 40 characters")
         return;
@@ -26,7 +53,6 @@ const addArtist = () => {
     artistDescSpan.className = "result_list_item_subtitle"
     artistDescSpan.textContent = artistDesc
 
-    const artistImg = artistForm.artistImg.value
     const artistImgElement = document.createElement("img")
     artistImgElement.src = artistImg
 
@@ -66,4 +92,14 @@ const removeArtist = targetId => {
 
     const resultList = document.querySelector("div.result_list")
     resultList.removeChild(targetItem)
+    removeArtistFromLocalStorage(targetId)
+}
+
+const removeArtistFromLocalStorage = id => {
+    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
+    const artistList = JSON.parse(rawArtistList)
+
+    delete artistList[id]
+
+    localStorage.setItem(ARTIST_LIST_KEY, JSON.stringify(artistList))
 }
