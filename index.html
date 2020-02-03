@@ -13,10 +13,11 @@
             <div id="app_title">
                 Artist Directory
             </div>
-            <div class="search_container__content">
-                <input type="text" placeholder="Type artist name here" />
+            <form class="search_container__content" name="searchForm">
+                <input id="searchInput" type="text" placeholder="Type artist name here" name="artistName" />
                 <input id="addArtistBtn" type="button" value="Add artist" onclick="showForm()" />
-            </div>
+                <input id="searchBtn" type="button" value="Search" onclick="search()" />
+            </form>
         </div>
         <div class="form_container">
             <form name="artistForm">

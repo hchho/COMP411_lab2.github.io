@@ -83,7 +83,7 @@ const addArtistToDom = (obj, newId) => {
 
     const resultList = document.querySelector("div.result_list");
     resultList.prepend(newItem);
-    
+
     artistForm.reset()
 }
 
@@ -102,4 +102,24 @@ const removeArtistFromLocalStorage = id => {
     delete artistList[id]
 
     localStorage.setItem(ARTIST_LIST_KEY, JSON.stringify(artistList))
+}
+
+const search = () => {
+    const searchForm = document.forms["searchForm"]
+    const targetArtistName = searchForm.artistName.value
+
+    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
+    const artistList = JSON.parse(rawArtistList)
+
+    const resultList = document.querySelector("div.result_list");
+    while (resultList.firstChild) {
+        resultList.removeChild(resultList.firstChild)
+    };
+
+    Object.keys(artistList).forEach(k => {
+        const data = JSON.parse(artistList[k])
+        if (data.artistName.toLowerCase().includes(targetArtistName.toLowerCase())) {
+            addArtistToDom(data, k)
+        }
+    })
 }
