@@ -18,7 +18,7 @@ const getAllArtistsFromFile = () => new Promise((resolve, reject) => {
         else resolve(rawData)
     })
 })
-.then(rawData => Object.assign({}, rawData && JSON.parse(rawData)))
+    .then(rawData => Object.assign({}, rawData && JSON.parse(rawData)))
 
 const writeArtistsToFile = artists => new Promise((resolve, reject) => {
     fs.writeFile(FILE_NAME, JSON.stringify(artists), (err, data) => {
@@ -30,28 +30,47 @@ const writeArtistsToFile = artists => new Promise((resolve, reject) => {
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, "index.html")))
 
 app.get('/getAllArtists', (req, res) => getAllArtistsFromFile()
-.then(data => res.json(data))
-.catch(() => res.status(400)))
+    .then(data => res.json(data))
+    .catch(() => res.status(400)))
 
 app.post('/addNewArtist', (req, res) => getAllArtistsFromFile()
-.then(result => {
-    const newArtist = req.body
-    const finalResult = Object.assign({}, result, newArtist)
-    return writeArtistsToFile(finalResult)
-    .then(data => res.json(data))
-    .catch(err => { throw err })
-})
-.catch(() => res.status(400)))
+    .then(result => {
+        const newArtist = req.body
+        const finalResult = Object.assign({}, result, newArtist)
+        return writeArtistsToFile(finalResult)
+            .then(data => res.json(data))
+            .catch(err => { throw err })
+    })
+    .catch(() => res.status(400)))
 
 app.delete('/deleteArtist/:id', (req, res) => getAllArtistsFromFile()
-.then(artistList => {
-    const artistId = req.params.id
+    .then(artistList => {
+        const artistId = req.params.id
 
-    delete artistList[artistId]
-    return writeArtistsToFile(artistList)
-    .then(data => res.json(data))
-    .catch(err => { throw err })
-})
-.catch(() => res.status(400)))
+        delete artistList[artistId]
+        return writeArtistsToFile(artistList)
+            .then(data => res.json(data))
+            .catch(err => { throw err })
+    })
+    .catch(() => res.status(400)))
 
-app.listen(PORT, () => console.log(`Server ready on Port ${PORT}`))
+app.get('/getArtist/:name', (req, res) => getAllArtistsFromFile()
+    .then(artistList => {
+        const targetName = req.params.name
+
+        const result = Object.keys(artistList).reduce((acc, key) => {
+            const data = artistList[key]
+            if (data.artistName.toLowerCase().includes(targetName.toLowerCase())) {
+                const tempResult = {}
+                tempResult[`${key}`] = data
+                return { ...acc, ...tempResult }
+            } else {
+                return acc
+            }
+        }, {})
+        return res.json(result)
+    })
+    .catch(err => res.status(400))
+)
+
+app.listen(PORT, () => console.log(`Server ready on port ${PORT}`))

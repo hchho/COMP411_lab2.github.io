@@ -11,7 +11,7 @@ const loadArtists = () =>
     fetch('/getAllArtists', {
         method: 'GET',
         headers: {
-            'Content-type': 'applciation/json'
+            'Content-type': 'application/json'
         }
     })
         .then(res => res.json())
@@ -30,10 +30,10 @@ const handleAddArtistClick = () => {
 
     const newId = (new Date()).getTime()
 
-    addToFile(artist, newId)
+    addArtistToFile(artist, newId)
 }
 
-const addToFile = (artist, newId) => {
+const addArtistToFile = (artist, newId) => {
     const rawBody = {}
     rawBody[`${newId}`] = artist
     fetch('/addNewArtist', {
@@ -111,18 +111,20 @@ const search = () => {
     const searchForm = document.forms["searchForm"]
     const targetArtistName = searchForm.artistName.value
 
-    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
-    const artistList = JSON.parse(rawArtistList)
-
     const resultList = document.querySelector("div.result_list");
     while (resultList.firstChild) {
         resultList.removeChild(resultList.firstChild)
     };
 
-    Object.keys(artistList).forEach(k => {
-        const data = JSON.parse(artistList[k])
-        if (data.artistName.toLowerCase().includes(targetArtistName.toLowerCase())) {
-            addArtistToDom(data, k)
-        }
-    })
+    targetArtistName.length == 0 ? initialLoad() :
+        fetch(`/getArtist/${targetArtistName}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(artistList => Object.keys(artistList).forEach(k =>
+                addArtistToDom(artistList[k], k))
+            )
 }
