@@ -1,5 +1,7 @@
 const STRING_LIMIT = 40;
-const ARTIST_LIST_KEY = 'artistList'
+const DEFAULT_HEADER = {
+    'Content-type': 'application/json'
+}
 
 const showForm = () => {
     const formContainer = document.querySelector("div.form_container");
@@ -10,9 +12,7 @@ const showForm = () => {
 const loadArtists = () =>
     fetch('/getAllArtists', {
         method: 'GET',
-        headers: {
-            'Content-type': 'application/json'
-        }
+        headers: DEFAULT_HEADER
     })
         .then(res => res.json())
         .catch(err => console.error(err))
@@ -38,9 +38,7 @@ const addArtistToFile = (artist, newId) => {
     rawBody[`${newId}`] = artist
     fetch('/addNewArtist', {
         method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
+        headers: DEFAULT_HEADER,
         body: JSON.stringify(rawBody)
     }).then(() => addArtistToDom(artist, newId))
 }
@@ -117,11 +115,9 @@ const search = () => {
     };
 
     targetArtistName.length == 0 ? initialLoad() :
-        fetch(`/getArtist/${targetArtistName}`, {
+        fetch(`/getArtistByName/${targetArtistName}`, {
             method: 'GET',
-            headers: {
-                'Content-type': 'application/json'
-            }
+            headers: DEFAULT_HEADER
         })
             .then(res => res.json())
             .then(artistList => Object.keys(artistList).forEach(k =>

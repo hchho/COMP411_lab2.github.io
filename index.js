@@ -54,7 +54,7 @@ app.delete('/deleteArtist/:id', (req, res) => getAllArtistsFromFile()
     })
     .catch(() => res.status(400)))
 
-app.get('/getArtist/:name', (req, res) => getAllArtistsFromFile()
+app.get('/getArtistByName/:name', (req, res) => getAllArtistsFromFile()
     .then(artistList => {
         const targetName = req.params.name
 
