@@ -4,6 +4,7 @@
   "description": "Lab 5 for COMP 4711",
   "main": "index.js",
   "scripts": {
+    "start": "npm run dev",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
