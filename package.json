@@ -1,0 +1,27 @@
+{
+  "name": "lab_5",
+  "version": "1.0.0",
+  "description": "Lab 5 for COMP 4711",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hchho/COMP411_lab2.github.io.git"
+  },
+  "author": "Henry Ho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hchho/COMP411_lab2.github.io/issues"
+  },
+  "homepage": "https://github.com/hchho/COMP411_lab2.github.io#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

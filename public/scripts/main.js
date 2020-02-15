@@ -7,11 +7,18 @@ const showForm = () => {
     formContainer.style.display = isFormVisible ? "none" : "flex"; // reverse visibility
 }
 
-const loadArtistsFromLocalStorage = () => {
-    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
-    const artistList = JSON.parse(rawArtistList)
-    Object.keys(artistList).forEach(k => addArtistToDom(JSON.parse(artistList[k]), k))
-}
+const loadArtists = () =>
+    fetch('/getAllArtists', {
+        method: 'GET',
+        headers: {
+            'Content-type': 'applciation/json'
+        }
+    })
+        .then(res => res.json())
+        .catch(err => console.error(err))
+
+const initialLoad = () => loadArtists()
+    .then(data => Object.keys(data).forEach(k => addArtistToDom(data[k], k)))
 
 const handleAddArtistClick = () => {
     const artistForm = document.forms["artistForm"]
@@ -23,18 +30,19 @@ const handleAddArtistClick = () => {
 
     const newId = (new Date()).getTime()
 
-    addArtistToDom(artist, newId)
-    addToLocalStorage(artist, newId)
+    addToFile(artist, newId)
 }
 
-const addToLocalStorage = (artist, newId) => {
-    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
-    const artistList = JSON.parse(rawArtistList)
-
-    const parsedArtist = JSON.stringify(artist)
-    const result = artistList || {}
-    result[newId] = parsedArtist
-    localStorage.setItem(ARTIST_LIST_KEY, JSON.stringify(result))
+const addToFile = (artist, newId) => {
+    const rawBody = {}
+    rawBody[`${newId}`] = artist
+    fetch('/addNewArtist', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(rawBody)
+    }).then(() => addArtistToDom(artist, newId))
 }
 
 const addArtistToDom = (obj, newId) => {
@@ -87,22 +95,17 @@ const addArtistToDom = (obj, newId) => {
     artistForm.reset()
 }
 
-const removeArtist = targetId => {
-    const targetItem = document.getElementById(`${targetId}`)
+const removeArtist = targetId => removeArtistFromFile(targetId)
+    .then(() => {
+        const targetItem = document.getElementById(`${targetId}`)
 
-    const resultList = document.querySelector("div.result_list")
-    resultList.removeChild(targetItem)
-    removeArtistFromLocalStorage(targetId)
-}
+        const resultList = document.querySelector("div.result_list")
+        resultList.removeChild(targetItem)
+    })
 
-const removeArtistFromLocalStorage = id => {
-    const rawArtistList = localStorage.getItem(ARTIST_LIST_KEY)
-    const artistList = JSON.parse(rawArtistList)
-
-    delete artistList[id]
-
-    localStorage.setItem(ARTIST_LIST_KEY, JSON.stringify(artistList))
-}
+const removeArtistFromFile = id => fetch(`/deleteArtist/${id}`, {
+    method: 'DELETE'
+})
 
 const search = () => {
     const searchForm = document.forms["searchForm"]
