@@ -27,7 +27,7 @@ const writeArtistsToFile = artists => new Promise((resolve, reject) => {
     })
 })
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, "index.html")))
+app.get('/', (req, res) => res.sendFile("index.html"))
 
 app.get('/getAllArtists', (req, res) => getAllArtistsFromFile()
     .then(data => res.json(data))
