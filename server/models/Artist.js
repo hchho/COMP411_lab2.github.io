@@ -13,7 +13,7 @@ const addArtist = ({ name, about, img }) =>
     "')"
   );
 
-const getArtist = name => db.query("Select * from people where name = " + name);
+const getArtist = name => db.query(`Select * from artists where name like '%${name}%'`);
 
 module.exports = {
   add: addArtist,
