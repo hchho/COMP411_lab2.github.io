@@ -33,13 +33,15 @@ const getAllArtistsFromFile = () =>
     });
   }).then(rawData => Object.assign({}, rawData && JSON.parse(rawData)));
 
-const writeArtistsToFile = artists =>
-  new Promise((resolve, reject) => {
-    fs.writeFile(FILE_NAME, JSON.stringify(artists), (err, data) => {
-      if (err) reject(err);
-      else resolve(artists);
-    });
-  });
+  let artistRoutes = require("./routes/artists");
+
+// const writeArtistsToFile = artists =>
+//   new Promise((resolve, reject) => {
+//     fs.writeFile(FILE_NAME, JSON.stringify(artists), (err, data) => {
+//       if (err) reject(err);
+//       else resolve(artists);
+//     });
+//   });
 
 app.get("/", (req, res) =>
   getAllArtistsFromFile()
@@ -53,60 +55,62 @@ app.get("/", (req, res) =>
     .catch(() => res.status(400))
 );
 
-app.post("/addNewArtist", (req, res) =>
-  getAllArtistsFromFile()
-    .then(result => {
-      const newArtist = req.body;
+app.use(artistRoutes);
 
-      const newId = new Date().getTime();
-      const formedArtist = {};
-      formedArtist[`${newId}`] = newArtist;
+// app.post("/artists", (req, res) =>
+//   getAllArtistsFromFile()
+//     .then(result => {
+//       const newArtist = req.body;
 
-      const finalResult = Object.assign({}, result, formedArtist);
-      return writeArtistsToFile(finalResult)
-        .then(() => res.redirect("/"))
-        .catch(err => {
-          throw err;
-        });
-    })
-    .catch(() => res.status(400))
-);
+//       const newId = new Date().getTime();
+//       const formedArtist = {};
+//       formedArtist[`${newId}`] = newArtist;
 
-app.delete("/deleteArtist/:id", (req, res) =>
-  getAllArtistsFromFile()
-    .then(artistList => {
-      const artistId = req.params.id;
+//       const finalResult = Object.assign({}, result, formedArtist);
+//       return writeArtistsToFile(finalResult)
+//         .then(() => res.redirect("/"))
+//         .catch(err => {
+//           throw err;
+//         });
+//     })
+//     .catch(() => res.status(400))
+// );
 
-      delete artistList[artistId];
-      return writeArtistsToFile(artistList)
-        .then(() => res.redirect(200, "/"))
-        .catch(err => {
-          throw err;
-        });
-    })
-    .catch(() => res.status(400))
-);
+// app.delete("/artists/:id", (req, res) =>
+//   getAllArtistsFromFile()
+//     .then(artistList => {
+//       const artistId = req.params.id;
 
-app.get("/getArtistByName", (req, res) =>
-  getAllArtistsFromFile()
-    .then(artistList => {
-      const targetName = req.query.name
-      const result = Object.keys(artistList).reduce((acc, key) => {
-        const data = artistList[key];
-        if (data.name.toLowerCase().includes(targetName.toLowerCase())) {
-          const tempResult = {};
-          tempResult[`${key}`] = data;
-          return { ...acc, ...tempResult };
-        } else {
-          return acc;
-        }
-      }, {});
-    //   return res.json(result);
-    res.render('home', { artists:  Object.keys(result).map(k =>
-        Object.assign({}, result[k], { id: k })
-      )})
-    })
-    .catch(err => res.status(400))
-);
+//       delete artistList[artistId];
+//       return writeArtistsToFile(artistList)
+//         .then(() => res.redirect(200, "/"))
+//         .catch(err => {
+//           throw err;
+//         });
+//     })
+//     .catch(() => res.status(400))
+// );
+
+// app.get("/artists/search", (req, res) =>
+//   getAllArtistsFromFile()
+//     .then(artistList => {
+//       const targetName = req.query.name
+//       const result = Object.keys(artistList).reduce((acc, key) => {
+//         const data = artistList[key];
+//         if (data.name.toLowerCase().includes(targetName.toLowerCase())) {
+//           const tempResult = {};
+//           tempResult[`${key}`] = data;
+//           return { ...acc, ...tempResult };
+//         } else {
+//           return acc;
+//         }
+//       }, {});
+//     //   return res.json(result);
+//     res.render('home', { artists:  Object.keys(result).map(k =>
+//         Object.assign({}, result[k], { id: k })
+//       )})
+//     })
+//     .catch(err => res.status(400))
+// );
 
 app.listen(PORT, () => console.log(`Server ready on port ${PORT}`));
