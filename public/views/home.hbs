@@ -3,10 +3,10 @@
         <div id="app_title">
             Artist Directory
         </div>
-        <form class="search_container__content" name="searchForm">
-            <input id="searchInput" type="text" placeholder="Type artist name here" name="artistName" />
+        <form class="search_container__content" name="searchForm" action="/getArtistByName" method="GET">
+            <input id="searchInput" type="text" placeholder="Type artist name here" name="name" />
             <input id="addArtistBtn" type="button" value="Add artist" onclick="showForm()" />
-            <input id="searchBtn" type="button" value="Search" onclick="search()" />
+            <input id="searchBtn" type="submit" value="Search" />
         </form>
     </div>
     <div class="form_container">

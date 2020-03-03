@@ -87,14 +87,13 @@ app.delete("/deleteArtist/:id", (req, res) =>
     .catch(() => res.status(400))
 );
 
-app.get("/getArtistByName/:name", (req, res) =>
+app.get("/getArtistByName", (req, res) =>
   getAllArtistsFromFile()
     .then(artistList => {
-      const targetName = req.params.name;
-
+      const targetName = req.query.name
       const result = Object.keys(artistList).reduce((acc, key) => {
         const data = artistList[key];
-        if (data.artistName.toLowerCase().includes(targetName.toLowerCase())) {
+        if (data.name.toLowerCase().includes(targetName.toLowerCase())) {
           const tempResult = {};
           tempResult[`${key}`] = data;
           return { ...acc, ...tempResult };
