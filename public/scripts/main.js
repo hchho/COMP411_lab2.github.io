@@ -12,20 +12,20 @@ const showForm = () => {
 const loadArtists = () =>
     fetch('/getAllArtists', {
         method: 'GET',
-        headers: DEFAULT_HEADER
+        // headers: DEFAULT_HEADER
     })
-        .then(res => res.json())
+        // .then(() => console.log("load success"))
+        .then(res => res)
         .catch(err => console.error(err))
 
-const initialLoad = () => loadArtists()
-    .then(data => Object.keys(data).forEach(k => addArtistToDom(data[k], k)))
+const initialLoad = () => loadArtists().then(data => document.write(data))
 
 const handleAddArtistClick = () => {
     const artistForm = document.forms["artistForm"]
     const artist = Object.assign({}, {
-        artistName: artistForm.artistName.value,
-        artistDesc: artistForm.artistDesc.value,
-        artistImg: artistForm.artistImg.value
+        name: artistForm.artistName.value,
+        desc: artistForm.artistDesc.value,
+        img: artistForm.artistImg.value
     })
 
     const newId = (new Date()).getTime()
@@ -40,7 +40,8 @@ const addArtistToFile = (artist, newId) => {
         method: 'POST',
         headers: DEFAULT_HEADER,
         body: JSON.stringify(rawBody)
-    }).then(() => addArtistToDom(artist, newId))
+    })
+        // .then(() => console.log("Add success"))
 }
 
 const addArtistToDom = (obj, newId) => {
