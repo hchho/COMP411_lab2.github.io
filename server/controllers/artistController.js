@@ -19,40 +19,30 @@ const writeArtistsToFile = artists =>
   });
 
 exports.getAllArtists = async (req, res) => {
-  const data = await model.getall()
-  res.render("home", {
-    artists: Object.keys(data).map(k =>
-      Object.assign({}, data[k], { id: k })
-    )
-  })
-}
-  // getAllArtistsFromFile()
-  //   .then(data =>
-  //     res.render("home", {
-  //       artists: Object.keys(data).map(k =>
-  //         Object.assign({}, data[k], { id: k })
-  //       )
-  //     })
-  //   )
-  //   .catch(() => res.status(400));
-
-exports.addArtists = (req, res) =>
-  getAllArtistsFromFile()
-    .then(result => {
-      const newArtist = req.body;
-
-      const newId = new Date().getTime();
-      const formedArtist = {};
-      formedArtist[`${newId}`] = newArtist;
-
-      const finalResult = Object.assign({}, result, formedArtist);
-      return writeArtistsToFile(finalResult)
-        .then(() => res.redirect("/"))
-        .catch(err => {
-          throw err;
-        });
+  try {
+    const result = await model.getall()
+    const data = result[0]
+    res.render("home", {
+      artists: Object.keys(data).map(k =>
+        Object.assign({}, data[k], { id: k })
+      )
     })
-    .catch(() => res.status(400));
+  } catch (e) {
+    console.error(e)
+    res.status(400)
+  }
+}
+
+exports.addArtists = async (req, res) => {
+  try {
+    const newArtist = req.body;
+    await model.add(newArtist)
+    res.redirect('/artists')
+  } catch (e) {
+    console.error(e)
+    res.status(400)
+  }
+}
 
 exports.getArtists = (req, res) =>
   getAllArtistsFromFile()

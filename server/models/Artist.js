@@ -1,16 +1,16 @@
 const db = require("../util/database");
 
-const getAllArtists = () => db.execute("Select * from artists");
+const getAllArtists = () => db.query("Select * from artists")
 
-const addArtist = ({name, desc, img}) =>
+const addArtist = ({ name, about, img }) =>
   db.execute(
-    "Insert into artists (name,desc,img) VALUES ('" +
-      name +
-      "','" +
-      desc +
-      "','" +
-      img +
-      "')"
+    "Insert into artists (name,about,img) VALUES ('" +
+    name +
+    "','" +
+    about +
+    "','" +
+    img +
+    "')"
   );
 
 const getArtist = name => db.query("Select * from people where name = " + name);
