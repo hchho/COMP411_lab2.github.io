@@ -1,3 +1,5 @@
+const model = require("../models/Artist")
+
 const FILE_NAME = "Artists.json";
 
 const getAllArtistsFromFile = () =>
@@ -16,16 +18,23 @@ const writeArtistsToFile = artists =>
     });
   });
 
-exports.getAllArtists = (req, res) =>
-  getAllArtistsFromFile()
-    .then(data =>
-      res.render("home", {
-        artists: Object.keys(data).map(k =>
-          Object.assign({}, data[k], { id: k })
-        )
-      })
+exports.getAllArtists = async (req, res) => {
+  const data = await model.getall()
+  res.render("home", {
+    artists: Object.keys(data).map(k =>
+      Object.assign({}, data[k], { id: k })
     )
-    .catch(() => res.status(400));
+  })
+}
+  // getAllArtistsFromFile()
+  //   .then(data =>
+  //     res.render("home", {
+  //       artists: Object.keys(data).map(k =>
+  //         Object.assign({}, data[k], { id: k })
+  //       )
+  //     })
+  //   )
+  //   .catch(() => res.status(400));
 
 exports.addArtists = (req, res) =>
   getAllArtistsFromFile()
