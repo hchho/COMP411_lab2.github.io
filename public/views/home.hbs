@@ -10,23 +10,23 @@
         </form>
     </div>
     <div class="form_container">
-        <form name="artistForm">
-            <input type="text" placeholder="Artist Name" name="artistName" />
-            <input type="text" placeholder="About Artist" name="artistDesc" />
-            <input type="text" placeholder="Image URL" name="artistImg" />
-            <input type="button" value="Add" id="addBtn" onclick="handleAddArtistClick()" />
+        <form name="artistForm" action="/addNewArtist" method="POST">
+            <input type="text" placeholder="Artist Name" name="name" />
+            <input type="text" placeholder="About Artist" name="desc" />
+            <input type="text" placeholder="Image URL" name="img" />
+            <input type="submit" value="Add" id="addBtn" />
         </form>
     </div>
     <div class="result_container">
         <div class="result_list">
             {{#each artists}}
             <div class="result_list_item" id={{this.id}}>
+                <div class="result_list_item_thumbnail">
+                    <img src="{{this.img}}" />
+                </div>
                 <div clas="result_list_item_desc">
                     <span class="result_list_item_title">{{this.name}}</span>
                     <span class="result_list_item_subtitle">{{this.desc}}</span>
-                </div>
-                <div class="result_list_item_thumbnail">
-                    <img src="{{this.img}}" />
                 </div>
                 <div class="delete_button_container">
                     <input type="button" value="Delete" class="delete_button" onclick="removeArtist({{this.id}})" />
