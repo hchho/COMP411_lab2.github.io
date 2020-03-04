@@ -31,11 +31,11 @@
                     <span class="result_list_item_title">{{this.name}}</span>
                     <span class="result_list_item_subtitle">{{this.desc}}</span>
                 </div>
-                <div class="delete_button_container">
-                    <input type="button" value="Delete" class="delete_button" onclick="removeArtist({{this.id}})" />
-                </div>
+                <form class="delete_button_container" action="/artists/delete/{{this.id}}" method="POST">
+                    <input type="submit" value="Delete" class="delete_button" />
+                </form>
             </div>
             {{/each}}
         </div>
     </div>
-</form>
+</div>

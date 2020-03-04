@@ -10,7 +10,7 @@ router.post("/artists", artistController.addArtists);
 
 router.get("/artists/search", artistController.getArtists);
 
-router.delete("/artists/:id", artistController.deleteArtists);
+router.post("/artists/delete/:id", artistController.deleteArtists);
 
 router.post("/logout", artistController.logout);
 

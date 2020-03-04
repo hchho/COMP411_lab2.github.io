@@ -44,7 +44,7 @@ exports.deleteArtists = async (req, res) => {
   try {
     const artistId = req.params.id
     const result = await model.deleteArtist(artistId)
-    res.redirect(200, "/artists")
+    res.redirect("/artists")
   } catch (e) {
     console.error(e)
     res.status(400)
