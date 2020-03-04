@@ -50,3 +50,7 @@ exports.deleteArtists = async (req, res) => {
     res.status(400)
   }
 }
+
+exports.logout = (req, res) => {
+  res.redirect("/login")
+}

@@ -120,3 +120,21 @@
     border: none;
     padding: 0.5em;
 }
+
+.logout_form {
+    display: flex;
+    padding: 1em;
+    margin: 0;
+    justify-content: flex-end;
+    width: 100%;
+    background-color:  rgb(212, 216, 0);
+    box-sizing: border-box;
+}
+
+.logout_form input {
+    padding: 1em;
+    color: #FFF;
+    background-color: #CCC;
+    font-weight: bold;
+    border: none;
+  }
