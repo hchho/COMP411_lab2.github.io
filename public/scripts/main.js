@@ -3,12 +3,3 @@ const showForm = () => {
     const isFormVisible = formContainer.style.display === "flex";
     formContainer.style.display = isFormVisible ? "none" : "flex"; // reverse visibility
 }   
-
-const removeArtist = id => fetch(`/artists/${id}`, {
-    method: 'DELETE'
-}).then(() => {
-    const targetItem = document.getElementById(`${id}`)
-
-    const resultList = document.querySelector("div.result_list")
-    resultList.removeChild(targetItem)
-})
