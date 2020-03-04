@@ -24,18 +24,11 @@ app.set("view engine", "hbs");
 app.set("views", "public/views");
 
 const artistRoutes = require("./routes/artists");
+const loginRoutes = require("./routes/login")
 
-app.get("/", (req, res) => res.render("login", { loginCSS: true }))
-
-app.post("/login", (req, res) => {
-  const { name, password } = req.body
-  if (name === "A00990152" && password === "password") {
-    res.redirect("/artists")
-  } else {
-    res.status(400)
-  }
-})
-
+app.use(loginRoutes);
 app.use(artistRoutes);
+
+app.get("/", (req, res) => res.redirect("/login"))
 
 app.listen(PORT, () => console.log(`Server ready on port ${PORT}`));

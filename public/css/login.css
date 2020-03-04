@@ -1,0 +1,32 @@
+.login_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login_div_container {
+  background-color: #CCC;
+  color: #666;
+  width: auto;
+  padding: 2em;
+  border-radius: 1em;
+}
+
+.form_group input {
+  width: 100%;
+  border: 1px grey solid;
+  padding: 0.5em;
+}
+
+#login_btn {
+  padding: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: #FFF;
+  background-color: rgb(212, 216, 0);
+  font-weight: bold;
+  border: none;
+  width: 100%;
+}
