@@ -10,7 +10,7 @@ exports.getAllArtists = async (req, res) => {
   try {
     const result = await model.getall()
     const data = result[0]
-    res.render("home", parseArtists(data))
+    res.render("home", {...parseArtists(data), artistsCSS: true })
   } catch (e) {
     console.error(e)
     res.status(400)
@@ -33,7 +33,7 @@ exports.getArtists = async (req, res) => {
     const targetName = req.query.name;
     const result = await model.getArtist(targetName)
     const data = result[0]
-    res.render("home", parseArtists(data));
+    res.render("home", {...parseArtists(data), artistsCSS: true });
   } catch (e) {
     console.error(e)
     res.status(400)

@@ -25,7 +25,16 @@ app.set("views", "public/views");
 
 const artistRoutes = require("./routes/artists");
 
-app.get("/", (req, res) => res.send("Hi"))
+app.get("/", (req, res) => res.render("login", { loginCSS: true }))
+
+app.post("/login", (req, res) => {
+  const { name, password } = req.body
+  if (name === "A00990152" && password === "password") {
+    res.redirect("/artists")
+  } else {
+    res.status(400)
+  }
+})
 
 app.use(artistRoutes);
 

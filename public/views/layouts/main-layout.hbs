@@ -1,6 +1,17 @@
 <html>
 
-{{>header}}
+<head>
+    <title>Lab 6</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    {{#if artistsCSS}}
+    <link rel="stylesheet" type="text/css" href="/css/artists.css">
+    {{/if}}
+    {{#if loginCSS}}
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    {{/if}}
+    <script src="/scripts/main.js" defer></script>
+</head>
 
 <body>
     {{{ body }}}
